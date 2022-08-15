@@ -3,6 +3,7 @@ package com.exercise.nasapictures.util
 import android.content.Context
 import com.exercise.nasapictures.model.NASAPicturesModel
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.InputStream
 
 class FetchJSONFromAsset {
@@ -21,8 +22,10 @@ class FetchJSONFromAsset {
             return json
         }
 
-        fun parseNASAPicturesJSON(context: Context, fileName: String) : NASAPicturesModel {
-            return Gson().fromJson(readJSONFromAsset(context, fileName), NASAPicturesModel::class.java)
+        fun parseNASAPicturesJSON(context: Context, fileName: String) : List<NASAPicturesModel> {
+            val gson = Gson()
+            val listPersonType = object : TypeToken<List<NASAPicturesModel>>() {}.type
+            return gson.fromJson(readJSONFromAsset(context, fileName), listPersonType)
         }
 
     }

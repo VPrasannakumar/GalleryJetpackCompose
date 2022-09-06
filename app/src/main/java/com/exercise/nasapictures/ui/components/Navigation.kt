@@ -25,7 +25,8 @@ fun Navigation(){
                            nullable = true
                        }
                    ) ){ entry ->
-            entry.arguments?.getString("name")?.let { DetailScreen(name = it) }
+            entry.arguments?.getString("name")?.let {
+                DetailScreen(name = it,navController = navController) }
         }
     }
 

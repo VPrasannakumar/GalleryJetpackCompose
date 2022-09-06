@@ -1,36 +1,79 @@
 package com.exercise.nasapictures.ui.components
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.exercise.nasapictures.MainViewModel
 import com.exercise.nasapictures.R
 import com.exercise.nasapictures.model.NASAPicturesModel
 import com.exercise.nasapictures.ui.Screen
+import com.exercise.nasapictures.ui.theme.Purple700
 import com.exercise.nasapictures.util.FetchJSONFromAsset
 import com.plcoding.navigationdrawercompose.ui.theme.NASAPicturesComposeTheme
+
 
 @Composable
 fun MainContent(navController: NavController) {
 
     NASAPicturesComposeTheme {
-        //Adding grid view
-        gridView(LocalContext.current, navController)
+
+        // background color for our application
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
+        ) {
+            // on below line we are specifying theme as scaffold.
+            Scaffold(
+                // in scaffold we are specifying top bar.
+                topBar = {
+                    // inside top bar we are specifying background color.
+                    TopAppBar(backgroundColor = Purple700,
+                        title = {
+                            // Specifying tile as a text
+                            Text(
+                                // text to display in top app bar.
+                                text = stringResource(R.string.app_name),
+                                // modifier to fill max width.
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp),
+                                // Specifying text alignment.
+                                textAlign = TextAlign.Left,
+                                // Specifying color for our text.
+                                color = Color.White
+                            )
+                        }
+                    )
+                }
+            ) { padding ->
+                //Adding grid view
+                gridView(LocalContext.current, navController, Modifier.padding(padding))
+
+            }
+
+        }
     }
 
 }
@@ -39,10 +82,10 @@ fun MainContent(navController: NavController) {
 // on below line we are creating grid view function for loading our grid view.
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun gridView(context: Context, navController: NavController) {
-    // on below line we are creating and initializing our array list
-    lateinit var picturesList: List<NASAPicturesModel>
-    picturesList = FetchJSONFromAsset.parseNASAPicturesJSON(context, "data.json")
+fun gridView(context: Context, navController: NavController, modifier: Modifier = Modifier) {
+     // on below line we are creating and initializing our array list
+     lateinit var picturesList: List<NASAPicturesModel>
+     picturesList = FetchJSONFromAsset.parseNASAPicturesJSON(context, "data.json")
 
     // vertical grid for creating a grid view.
     LazyVerticalGrid(
@@ -62,11 +105,11 @@ fun gridView(context: Context, navController: NavController) {
                     Toast.makeText(context, picturesList[it].title, Toast.LENGTH_SHORT).show()
                     navController.navigate(Screen.DetailScreen.withArgs(picturesList[it].title!!))
                 },
-
                 //Adding padding from our all sides.
                 modifier = Modifier.padding(5.dp),
                 // Adding elevation for the card.
-                elevation = 10.dp
+                elevation = 10.dp,
+                shape = RoundedCornerShape(10.dp)
             ) {
                 // on below line we are creating a column on below sides.
                 Column(
@@ -87,11 +130,10 @@ fun gridView(context: Context, navController: NavController) {
                             .crossfade(true)
                             .build(),
                         placeholder = painterResource(R.drawable.ic_launcher_foreground),
-                        contentDescription = stringResource(R.string.app_name),
+                        contentDescription = picturesList[it].title,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .wrapContentSize()
-                            .wrapContentHeight()
+                            .height(150.dp)
                             .wrapContentWidth()
                     )
                 }

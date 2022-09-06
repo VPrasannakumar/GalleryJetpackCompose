@@ -197,6 +197,18 @@ fun SliderView(state: PagerState, viewModel: MainViewModel) {
                     }
 
                     Spacer(modifier = Modifier.padding(5.dp))
+                    viewModel.nasaListResponse[page].date?.let {
+                        Text(
+                            text = it,
+                            Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight().padding(2.dp),
+                            textAlign = TextAlign.End,
+                            maxLines = 2,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                     viewModel.nasaListResponse[page].copyright?.let {
                         Text(
                             text = it,
@@ -204,7 +216,7 @@ fun SliderView(state: PagerState, viewModel: MainViewModel) {
                                 .fillMaxWidth()
                                 .wrapContentHeight().padding(2.dp),
                             textAlign = TextAlign.End,
-                            fontSize = 18.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Medium
                         )
                     }

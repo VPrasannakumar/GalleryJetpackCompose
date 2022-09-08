@@ -1,4 +1,4 @@
-package com.exercise.nasapictures.ui.components
+package com.exercise.nasapictures.ui
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons

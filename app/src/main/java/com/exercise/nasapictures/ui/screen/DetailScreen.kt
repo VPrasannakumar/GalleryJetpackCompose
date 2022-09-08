@@ -1,13 +1,10 @@
-package com.exercise.nasapictures.ui.components
+package com.exercise.nasapictures.ui.screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -20,22 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.size.Scale
-import com.exercise.nasapictures.MainViewModel
+import com.exercise.nasapictures.SharedViewModel
 import com.exercise.nasapictures.R
 import com.exercise.nasapictures.model.NASAPicturesModel
 import com.exercise.nasapictures.ui.Screen
@@ -43,17 +35,22 @@ import com.exercise.nasapictures.ui.theme.Purple700
 import com.google.accompanist.pager.*
 import com.plcoding.navigationdrawercompose.ui.theme.NASAPicturesComposeTheme
 import kotlinx.coroutines.delay
-import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DetailScreen(name: String?, navController: NavController) {
+fun DetailScreen(
+    position: Int,
+    navController: NavController,
+    sharedViewModel: SharedViewModel
+) {
 
+
+    val listOfNASADetails = sharedViewModel.nasaListResponse
+    Log.v("DetailScreen","position - "+position)
+    Log.v("DetailScreen","position - "+listOfNASADetails!![position].title)
     NASAPicturesComposeTheme {
         // background color for our application
-        val mainViewModel: MainViewModel = viewModel()
-        mainViewModel.getAllNASAData()
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
@@ -111,15 +108,15 @@ fun DetailScreen(name: String?, navController: NavController) {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     /*Text(text = "Hello, $name")*/
-
+                   // Toast.makeText(LocalContext.current, mainViewModel.nasaListResponse[name!!.toInt()].title, Toast.LENGTH_SHORT).show()
                     val state = rememberPagerState()
                     Column {
-                        SliderView(state, mainViewModel)
+                        SliderView(state, listOfNASADetails)
                     }
                     LaunchedEffect(key1 = state.currentPage) {
                         delay(5000)
                         var newPosition = state.currentPage + 1
-                        if (newPosition > mainViewModel.nasaListResponse.size - 1) newPosition = 0
+                        if (newPosition > listOfNASADetails.size - 1) newPosition = 0
                         // scrolling to the new position.
                         state.animateScrollToPage(newPosition)
                     }
@@ -135,17 +132,17 @@ fun DetailScreen(name: String?, navController: NavController) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun SliderView(state: PagerState, viewModel: MainViewModel) {
+fun SliderView(state: PagerState, listOfNASADetails: List<NASAPicturesModel>?) {
 
     val imageUrl =
         remember { mutableStateOf("") }
     HorizontalPager(
         state = state,
-        count = viewModel.nasaListResponse.size, modifier = Modifier
+        count = listOfNASADetails!!.size, modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
     ) { page ->
-        imageUrl.value = viewModel.nasaListResponse[page].hdUrl!!
+        imageUrl.value = listOfNASADetails[page].hdUrl!!
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -170,7 +167,7 @@ fun SliderView(state: PagerState, viewModel: MainViewModel) {
                     .padding(5.dp)
                     .background(Color.LightGray.copy(alpha = 0.60F))) {
 
-                    viewModel.nasaListResponse[page].title?.let {
+                    listOfNASADetails[page].title?.let {
                         Text(
                             text = it,
                             Modifier
@@ -183,7 +180,7 @@ fun SliderView(state: PagerState, viewModel: MainViewModel) {
                     }
 
 
-                    viewModel.nasaListResponse[page].explanation?.let {
+                    listOfNASADetails[page].explanation?.let {
                         Text(
                             text = it,
                             Modifier
@@ -197,7 +194,7 @@ fun SliderView(state: PagerState, viewModel: MainViewModel) {
                     }
 
                     Spacer(modifier = Modifier.padding(5.dp))
-                    viewModel.nasaListResponse[page].date?.let {
+                    listOfNASADetails[page].date?.let {
                         Text(
                             text = it,
                             Modifier
@@ -209,7 +206,7 @@ fun SliderView(state: PagerState, viewModel: MainViewModel) {
                             fontWeight = FontWeight.Medium
                         )
                     }
-                    viewModel.nasaListResponse[page].copyright?.let {
+                    listOfNASADetails[page].copyright?.let {
                         Text(
                             text = it,
                             Modifier

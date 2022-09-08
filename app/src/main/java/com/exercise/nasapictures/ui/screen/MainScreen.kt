@@ -1,8 +1,6 @@
-package com.exercise.nasapictures.ui.components
+package com.exercise.nasapictures.ui.screen
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -18,24 +16,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.exercise.nasapictures.MainViewModel
+import com.exercise.nasapictures.SharedViewModel
 import com.exercise.nasapictures.R
-import com.exercise.nasapictures.model.NASAPicturesModel
 import com.exercise.nasapictures.ui.Screen
 import com.exercise.nasapictures.ui.theme.Purple700
-import com.exercise.nasapictures.util.FetchJSONFromAsset
 import com.plcoding.navigationdrawercompose.ui.theme.NASAPicturesComposeTheme
 
 
 @Composable
-fun MainContent(navController: NavController) {
+fun MainContent(
+    navController: NavController,
+    sharedViewModel: SharedViewModel
+) {
 
     NASAPicturesComposeTheme {
 
@@ -69,7 +66,7 @@ fun MainContent(navController: NavController) {
                 }
             ) { padding ->
                 //Adding grid view
-                gridView(LocalContext.current, navController, Modifier.padding(padding))
+                gridView(sharedViewModel, navController, Modifier.padding(padding))
 
             }
 
@@ -82,10 +79,9 @@ fun MainContent(navController: NavController) {
 // on below line we are creating grid view function for loading our grid view.
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun gridView(context: Context, navController: NavController, modifier: Modifier = Modifier) {
+fun gridView(sharedViewModel: SharedViewModel, navController: NavController, modifier: Modifier = Modifier) {
      // on below line we are creating and initializing our array list
-     lateinit var picturesList: List<NASAPicturesModel>
-     picturesList = FetchJSONFromAsset.parseNASAPicturesJSON(context, "data.json")
+    sharedViewModel.getAllNASAData()
 
     // vertical grid for creating a grid view.
     LazyVerticalGrid(
@@ -95,15 +91,15 @@ fun gridView(context: Context, navController: NavController, modifier: Modifier 
         modifier = Modifier.padding(10.dp)
     ) {
         // Displaying our items upto the size of the list.
-        items(picturesList.size) {
+        items(sharedViewModel.nasaListResponse!!.size) {
             // Creating a card for each item of our grid view.
             Card(
                 // inside our grid view on below line we are
                 // adding on click for each item of our grid view.
                 onClick = {
                     // inside on click we are displaying the toast message.
-                    Toast.makeText(context, picturesList[it].title, Toast.LENGTH_SHORT).show()
-                    navController.navigate(Screen.DetailScreen.withArgs(picturesList[it].title!!))
+                    //navController.navigate(Screen.DetailScreen.route)
+                    navController.navigate(Screen.DetailScreen.withArgs(it))
                 },
                 //Adding padding from our all sides.
                 modifier = Modifier.padding(5.dp),
@@ -126,11 +122,11 @@ fun gridView(context: Context, navController: NavController, modifier: Modifier 
                     // on below line we are creating image for our grid view item.
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(picturesList[it].hdUrl)
+                            .data(sharedViewModel.nasaListResponse!![it].hdUrl)
                             .crossfade(true)
                             .build(),
                         placeholder = painterResource(R.drawable.ic_launcher_foreground),
-                        contentDescription = picturesList[it].title,
+                        contentDescription = sharedViewModel.nasaListResponse!![it].title,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .height(150.dp)

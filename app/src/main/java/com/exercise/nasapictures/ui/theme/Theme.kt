@@ -1,14 +1,12 @@
-package com.plcoding.navigationdrawercompose.ui.theme
+package com.exercise.nasapictures.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import com.exercise.nasapictures.ui.theme.Purple200
-import com.exercise.nasapictures.ui.theme.Purple500
-import com.exercise.nasapictures.ui.theme.Purple700
-import com.exercise.nasapictures.ui.theme.Teal200
+import com.plcoding.navigationdrawercompose.ui.theme.Shapes
+import com.plcoding.navigationdrawercompose.ui.theme.Typography
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,
@@ -20,15 +18,6 @@ private val LightColorPalette = lightColors(
     primary = Purple500,
     primaryVariant = Purple700,
     secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
 )
 
 @Composable

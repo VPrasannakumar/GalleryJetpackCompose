@@ -1,6 +1,5 @@
 package com.exercise.nasapictures.ui.screen
 
-import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -17,7 +16,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -25,7 +23,7 @@ import com.exercise.nasapictures.SharedViewModel
 import com.exercise.nasapictures.R
 import com.exercise.nasapictures.ui.Screen
 import com.exercise.nasapictures.ui.theme.Purple700
-import com.plcoding.navigationdrawercompose.ui.theme.NASAPicturesComposeTheme
+import com.exercise.nasapictures.ui.theme.NASAPicturesComposeTheme
 
 
 @Composable

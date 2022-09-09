@@ -16,15 +16,12 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     private val context = getApplication<Application>().applicationContext
     var nasaListResponse  by mutableStateOf<List<NASAPicturesModel>?>(null)
-
     private set
-
     fun getAllNASAData() {
         viewModelScope.launch {
-
             try {
+                //Fetching data from json file
                 nasaListResponse = FetchJSONFromAsset.parseNASAPicturesJSON(context, "data.json")
-
             } catch (e: Exception) {
                 Log.e("Error",e.toString())
             }

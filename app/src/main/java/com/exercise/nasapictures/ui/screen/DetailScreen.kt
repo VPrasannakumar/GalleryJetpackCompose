@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import coil.size.Scale
@@ -31,13 +30,12 @@ import com.exercise.nasapictures.SharedViewModel
 import com.exercise.nasapictures.R
 import com.exercise.nasapictures.model.NASAPicturesModel
 import com.exercise.nasapictures.ui.Screen
-import com.exercise.nasapictures.ui.theme.Purple700
 import com.google.accompanist.pager.*
-import com.plcoding.navigationdrawercompose.ui.theme.NASAPicturesComposeTheme
+import com.exercise.nasapictures.ui.theme.NASAPicturesComposeTheme
+import com.exercise.nasapictures.ui.theme.Purple700
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalPagerApi::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DetailScreen(
     position: Int,
@@ -45,7 +43,7 @@ fun DetailScreen(
     sharedViewModel: SharedViewModel
 ) {
 
-
+    //Array of NASAPictures data
     val listOfNASADetails = sharedViewModel.nasaListResponse
     Log.v("DetailScreen","position - "+position)
     Log.v("DetailScreen","position - "+listOfNASADetails!![position].title)
@@ -107,12 +105,12 @@ fun DetailScreen(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    /*Text(text = "Hello, $name")*/
-                   // Toast.makeText(LocalContext.current, mainViewModel.nasaListResponse[name!!.toInt()].title, Toast.LENGTH_SHORT).show()
-                    val state = rememberPagerState()
+                    val state = rememberPagerState(position)
                     Column {
+                        // Initiate slider with postion and array of objects
                         SliderView(state, listOfNASADetails)
                     }
+                    //Delay between pages 5secs
                     LaunchedEffect(key1 = state.currentPage) {
                         delay(5000)
                         var newPosition = state.currentPage + 1
@@ -134,8 +132,7 @@ fun DetailScreen(
 @Composable
 fun SliderView(state: PagerState, listOfNASADetails: List<NASAPicturesModel>?) {
 
-    val imageUrl =
-        remember { mutableStateOf("") }
+    val imageUrl = remember { mutableStateOf("") }
     HorizontalPager(
         state = state,
         count = listOfNASADetails!!.size, modifier = Modifier
@@ -143,12 +140,13 @@ fun SliderView(state: PagerState, listOfNASADetails: List<NASAPicturesModel>?) {
             .fillMaxWidth()
     ) { page ->
         imageUrl.value = listOfNASADetails[page].hdUrl!!
-
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            //Full screen image
             Box(contentAlignment = Alignment.BottomCenter) {
 
                 val painter = rememberImagePainter(data = imageUrl.value, builder = {
@@ -162,17 +160,21 @@ fun SliderView(state: PagerState, listOfNASADetails: List<NASAPicturesModel>?) {
                         .fillMaxSize(), contentScale = ContentScale.Crop
                 )
 
-                Column(Modifier.fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(5.dp)
-                    .background(Color.LightGray.copy(alpha = 0.60F))) {
+                // Details about image
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(5.dp)
+                        .background(Color.LightGray.copy(alpha = 0.60F))) {
 
                     listOfNASADetails[page].title?.let {
                         Text(
                             text = it,
                             Modifier
                                 .fillMaxWidth()
-                                .wrapContentHeight().padding(2.dp),
+                                .wrapContentHeight()
+                                .padding(2.dp),
                             textAlign = TextAlign.Start,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
@@ -185,7 +187,8 @@ fun SliderView(state: PagerState, listOfNASADetails: List<NASAPicturesModel>?) {
                             text = it,
                             Modifier
                                 .fillMaxWidth()
-                                .wrapContentHeight().padding(2.dp),
+                                .wrapContentHeight()
+                                .padding(2.dp),
                             textAlign = TextAlign.Start,
                             maxLines = 2,
                             fontSize = 18.sp,
@@ -199,7 +202,8 @@ fun SliderView(state: PagerState, listOfNASADetails: List<NASAPicturesModel>?) {
                             text = it,
                             Modifier
                                 .fillMaxWidth()
-                                .wrapContentHeight().padding(2.dp),
+                                .wrapContentHeight()
+                                .padding(2.dp),
                             textAlign = TextAlign.End,
                             maxLines = 2,
                             fontSize = 16.sp,
@@ -211,7 +215,8 @@ fun SliderView(state: PagerState, listOfNASADetails: List<NASAPicturesModel>?) {
                             text = it,
                             Modifier
                                 .fillMaxWidth()
-                                .wrapContentHeight().padding(2.dp),
+                                .wrapContentHeight()
+                                .padding(2.dp),
                             textAlign = TextAlign.End,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium

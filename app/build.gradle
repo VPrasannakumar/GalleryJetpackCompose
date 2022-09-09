@@ -72,10 +72,25 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-rxjava2:$compose_version")
 
     // UI Tests
+    // Test rules and transitive dependencies:
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
+    // Needed for createComposeRule, but not createAndroidComposeRule:
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
 
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
+
+    // Dependencies for Android instrumented unit tests
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
+
+    androidTestImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+    androidTestImplementation "org.mockito:mockito-android:4.0.0"
+    //For runBlockingTest, CoroutineDispatcher etc.
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2'
+    //For InstantTaskExecutorRule
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation "org.mockito:mockito-core:4.0.0"
+
 
     // Jetpack Compose Integration
     implementation("androidx.navigation:navigation-compose:$nav_version")

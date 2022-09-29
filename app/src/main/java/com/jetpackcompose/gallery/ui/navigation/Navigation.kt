@@ -1,4 +1,4 @@
-package com.exercise.nasapictures.ui.navigation
+package com.jetpackcompose.gallery.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -7,10 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.exercise.nasapictures.SharedViewModel
-import com.exercise.nasapictures.ui.Screen
-import com.exercise.nasapictures.ui.screen.DetailScreen
-import com.exercise.nasapictures.ui.screen.MainContent
+import com.jetpackcompose.gallery.SharedViewModel
+import com.jetpackcompose.gallery.ui.Screen
+import com.jetpackcompose.gallery.ui.screen.DetailScreen
+import com.jetpackcompose.gallery.ui.screen.MainContent
 
 
 @Composable

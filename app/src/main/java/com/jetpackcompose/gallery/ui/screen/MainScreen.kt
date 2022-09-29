@@ -1,4 +1,4 @@
-package com.exercise.nasapictures.ui.screen
+package com.jetpackcompose.gallery.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -19,11 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.exercise.nasapictures.SharedViewModel
-import com.exercise.nasapictures.R
-import com.exercise.nasapictures.ui.Screen
-import com.exercise.nasapictures.ui.theme.Purple700
-import com.exercise.nasapictures.ui.theme.NASAPicturesComposeTheme
+import com.jetpackcompose.gallery.R
+import com.jetpackcompose.gallery.SharedViewModel
+import com.jetpackcompose.gallery.ui.Screen
+import com.jetpackcompose.gallery.ui.theme.Purple700
+import com.jetpackcompose.gallery.ui.theme.PicturesComposeTheme
 
 
 @Composable
@@ -32,7 +32,7 @@ fun MainContent(
     sharedViewModel: SharedViewModel
 ) {
 
-    NASAPicturesComposeTheme {
+    PicturesComposeTheme {
 
         // background color for our application
         Surface(
@@ -86,7 +86,7 @@ fun gridView(sharedViewModel: SharedViewModel, navController: NavController, mod
         // column count for our grid view.
         columns = GridCells.Fixed(2),
         //Adding padding from all sides to our grid view.
-        modifier = Modifier.padding(10.dp)
+        modifier = Modifier.padding(10.dp),
     ) {
         // Displaying our items upto the size of the list.
         items(sharedViewModel.nasaListResponse!!.size) {

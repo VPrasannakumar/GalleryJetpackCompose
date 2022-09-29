@@ -1,9 +1,9 @@
-package com.exercise.nasapictures
+package com.jetpackcompose.gallery
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import com.exercise.nasapictures.ui.navigation.Navigation
+import com.jetpackcompose.gallery.ui.navigation.Navigation
 
 
 class MainActivity : AppCompatActivity() {

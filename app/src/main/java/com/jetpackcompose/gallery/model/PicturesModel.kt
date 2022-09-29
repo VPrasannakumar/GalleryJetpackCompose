@@ -1,4 +1,4 @@
-package com.exercise.nasapictures.model
+package com.jetpackcompose.gallery.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 //Model class for NASA Pictures data
 @Parcelize
-data class NASAPicturesModel(
+data class PicturesModel(
     @SerializedName("copyright") @Expose var copyright : String?=null,
     @SerializedName("date") @Expose var date : String?=null,
     @SerializedName("explanation") @Expose var explanation : String?= null,

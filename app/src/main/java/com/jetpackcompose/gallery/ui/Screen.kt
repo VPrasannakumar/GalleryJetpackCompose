@@ -1,6 +1,4 @@
-package com.exercise.nasapictures.ui
-
-import com.exercise.nasapictures.model.NASAPicturesModel
+package com.jetpackcompose.gallery.ui
 
 sealed class Screen(val route:String){
 

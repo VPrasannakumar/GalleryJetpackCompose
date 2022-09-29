@@ -1,6 +1,5 @@
-package com.exercise.nasapictures.ui.screen
+package com.jetpackcompose.gallery.ui.screen
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,13 +25,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import coil.size.Scale
-import com.exercise.nasapictures.SharedViewModel
-import com.exercise.nasapictures.R
-import com.exercise.nasapictures.model.NASAPicturesModel
-import com.exercise.nasapictures.ui.Screen
+import com.jetpackcompose.gallery.SharedViewModel
+import com.jetpackcompose.gallery.model.PicturesModel
+import com.jetpackcompose.gallery.ui.Screen
 import com.google.accompanist.pager.*
-import com.exercise.nasapictures.ui.theme.NASAPicturesComposeTheme
-import com.exercise.nasapictures.ui.theme.Purple700
+import com.jetpackcompose.gallery.R
+import com.jetpackcompose.gallery.ui.theme.PicturesComposeTheme
+import com.jetpackcompose.gallery.ui.theme.Purple700
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalPagerApi::class)
@@ -43,11 +42,14 @@ fun DetailScreen(
     sharedViewModel: SharedViewModel
 ) {
 
-    //Array of NASAPictures data
+    //Array of Pictures data
     val listOfNASADetails = sharedViewModel.nasaListResponse
     Log.v("DetailScreen","position - "+position)
-    Log.v("DetailScreen","position - "+listOfNASADetails!![position].title)
-    NASAPicturesComposeTheme {
+    listOfNASADetails.let {
+        Log.v("DetailScreen","position - "+listOfNASADetails!![position].title)
+    }
+
+    PicturesComposeTheme {
         // background color for our application
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -114,7 +116,7 @@ fun DetailScreen(
                     LaunchedEffect(key1 = state.currentPage) {
                         delay(5000)
                         var newPosition = state.currentPage + 1
-                        if (newPosition > listOfNASADetails.size - 1) newPosition = 0
+                        if (newPosition > listOfNASADetails!!.size - 1) newPosition = 0
                         // scrolling to the new position.
                         state.animateScrollToPage(newPosition)
                     }
@@ -130,7 +132,7 @@ fun DetailScreen(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun SliderView(state: PagerState, listOfNASADetails: List<NASAPicturesModel>?) {
+fun SliderView(state: PagerState, listOfNASADetails: List<PicturesModel>?) {
 
     val imageUrl = remember { mutableStateOf("") }
     HorizontalPager(

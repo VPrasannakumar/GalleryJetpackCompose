@@ -1,4 +1,4 @@
-package com.exercise.nasapictures.ui.theme
+package com.jetpackcompose.gallery.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
